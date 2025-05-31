@@ -1,0 +1,16 @@
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.suggestions-container {
+  position: absolute;
+  z-index: 9999;
+  top: calc(100% + 0.5rem);
+  max-height: 15rem;
+  overflow-y: auto;
+}

@@ -1,0 +1,114 @@
+<div
+  class="no-scrollbar relative min-h-[90vh] bg-gradient-to-r from-blue-600 to-pink-500 overflow-hidden"
+>
+  <div class="absolute inset-0">
+    <img
+      src="banner/banner1.jpg"
+      alt="Background"
+      class="w-full h-full object-cover opacity-90"
+    />
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-blue-900/60 to-pink-900/60 backdrop-blur-sm md:bg-gradient-to-r md:from-blue-900/50 md:to-pink-900/30 md:backdrop-blur-[2px]"
+    ></div>
+  </div>
+
+  <div class="absolute inset-0 pointer-events-none overflow-hidden">
+    <div
+      class="absolute -top-20 -left-20 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse"
+    ></div>
+    <div
+      class="absolute -bottom-16 -right-16 w-72 h-72 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse"
+      style="animation-delay: 1s"
+    ></div>
+    <div
+      class="absolute top-1/3 right-1/4 w-64 h-64 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"
+      style="animation-delay: 2s"
+    ></div>
+  </div>
+
+  <div
+    class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col md:flex-row items-center justify-center py-12 md:py-0"
+  >
+    <div class="md:w-1/2 text-center md:text-left mb-8 md:mb-0 mt-8 md:mt-24">
+      <h1
+        class="text-4xl md:text-5xl lg:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-200 pb-3 leading-tight"
+      >
+        Discover
+      </h1>
+
+      <p class="mt-4 text-gray-200 text-lg leading-relaxed max-w-md">
+        Discover Your Next Family Adventure Join a community of curious kids and
+        inspired parents. Explore nearby activities or plan unforgettable
+        getaways, all tailored to your child’s age, energy, and interests.
+      </p>
+      <div
+        class="mt-8 flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4"
+      >
+        <a
+          [routerLink]="['/home', 'activities']"
+          class="bg-green-500 px-6 py-3 rounded-full font-medium text-white hover:bg-green-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
+        >
+          Find Activities
+        </a>
+        <button
+          (click)="scrollToHomeContent()"
+          class="bg-blue-500 text-white px-6 py-3 rounded-full font-medium hover:bg-blue-600 transition-all duration-300 transform hover:scale-105"
+        >
+          How it works
+        </button>
+      </div>
+    </div>
+
+    <div class="hidden md:block md:w-1/2 relative h-full">
+      <div
+        class="absolute inset-0 flex justify-center items-center pointer-events-none"
+      >
+        <div
+          class="absolute top-[40%] w-80 h-80 lg:w-96 lg:h-96 transition-all duration-700 hover:scale-105 transform-gpu z-10"
+          style="right: 60%"
+        >
+          <img
+            src="banner/banner2.png"
+            alt="Feature 1"
+            class="w-full h-full rounded-full object-cover shadow-xl border-4 border-white/40"
+          />
+        </div>
+        <div
+          class="absolute top-[50%] w-80 h-80 lg:w-96 lg:h-96 transition-all duration-700 hover:scale-105 transform-gpu z-20"
+          style="right: 10%"
+        >
+          <img
+            src="banner/banner3.jpg"
+            alt="Feature 2"
+            class="w-full h-full rounded-full object-cover shadow-xl border-4 border-white/40"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="md:hidden w-full flex justify-center mt-4 relative">
+      <div class="relative w-full h-72 max-w-md">
+        <div
+          class="absolute left-0 bottom-0 w-56 h-56 transition-all duration-700 z-10"
+        >
+          <img
+            src="./banner/banner2.jpg"
+            alt="Feature 1"
+            class="w-full h-full rounded-full object-cover shadow-xl border-4 border-white/40"
+          />
+        </div>
+        <div
+          class="absolute right-0 top-0 w-56 h-56 transition-all duration-700 z-20"
+        >
+          <img
+            src="./banner/banner3.jpg"
+            alt="Feature 2"
+            class="w-full h-full rounded-full object-cover shadow-xl border-4 border-white/40"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-search-filter></app-search-filter>
+</div>

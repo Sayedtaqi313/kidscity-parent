@@ -1,0 +1,308 @@
+<header
+  windowScroll
+  (scrolled)="onScroll($event)"
+  *ngIf="isInit"
+  [ngClass]="{
+    'h-16': isScrolled,
+    'h-20': !isScrolled
+  }"
+  class="fixed top-0 left-0 right-0 w-full transition-all duration-300 z-40 bg-gray-50"
+>
+  <div class="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
+    <div class="flex items-center space-x-2">
+      <img
+        src="./logo/logo.png"
+        alt="Logo"
+        class="h-28 md:h-32 object-contain w-auto"
+      />
+    </div>
+
+    <nav class="hidden md:flex items-center space-x-8">
+      <a
+        [routerLink]="['/home']"
+        class="flex cursor-pointer p-2 font-semibold items-center space-x-1 text-kid-blue hover:text-kid-purple transition-all transform hover:scale-110 hover:bg-white/20 rounded-lg hover:bg-gray-100"
+      >
+        <lucide-icon name="Home" class="w-5 h-5"></lucide-icon>
+        <span>Home</span>
+      </a>
+      <a
+        *ngIf="!isLoggedIn"
+        [routerLink]="['/about-us']"
+        class="flex cursor-pointer p-2 font-semibold items-center space-x-1 text-kid-blue hover:text-kid-purple transition-all transform hover:scale-110 hover:bg-white/20 rounded-lg hover:bg-gray-100"
+      >
+        <lucide-icon name="Info" class="w-5 h-5"></lucide-icon>
+        <span>About Us</span>
+      </a>
+      <a
+        [routerLink]="['/home/activities']"
+        class="flex cursor-pointer font-semibold p-2 items-center space-x-1 text-kid-blue hover:text-kid-purple transition-all transform hover:scale-110 hover:bg-white/20 rounded-lg hover:bg-gray-100"
+      >
+        <lucide-icon name="List" class="w-5 h-5"></lucide-icon>
+        <span>All Activities</span>
+      </a>
+      <a
+        *ngIf="isLoggedIn"
+        [routerLink]="['/dashboard/subscribed-activities']"
+        class="flex cursor-pointer p-2 font-semibold items-center space-x-1 text-kid-blue hover:text-kid-purple transition-all transform hover:scale-110 hover:bg-white/20 rounded-lg hover:bg-gray-100"
+      >
+        <lucide-icon name="BookmarkCheck" class="w-5 h-5"></lucide-icon>
+        <span>Subscribed-Activities</span>
+      </a>
+      <a
+        *ngIf="isLoggedIn"
+        [routerLink]="['/dashboard/notifications']"
+        class="flex cursor-pointer font-semibold p-2 items-center space-x-1 text-kid-blue hover:text-kid-purple transition-all transform hover:scale-110 hover:bg-white/20 rounded-lg relative hover:bg-gray-100"
+      >
+        <lucide-icon name="Bell" class="w-5 h-5"></lucide-icon>
+        <span>Notifications</span>
+        <ng-container *ngIf="notificationCount$ | async as count">
+          <span
+            *ngIf="count > 0"
+            class="absolute top-0 right-0 translate-x-1 -translate-y-1 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center"
+          >
+            {{ count }}
+          </span>
+        </ng-container>
+      </a>
+    </nav>
+
+    <div class="hidden md:flex items-center space-x-4">
+      <ng-container *ngIf="!isLoggedIn">
+        <a
+          [routerLink]="['/auth/signin']"
+          class="flex items-center px-4 font-semibold py-2 text-kid-blue hover:text-kid-purple transition-all transform hover:scale-110 hover:bg-white/20 rounded-lg hover:bg-gray-100"
+        >
+          <lucide-icon name="LogIn" class="w-4 h-4 mr-1"></lucide-icon>
+          <span>Sign In</span>
+        </a>
+        <a
+          [routerLink]="['/auth/signup']"
+          class="flex items-center px-6 py-2 bg-kid-purple font-semibold rounded-lg hover:bg-kid-pink transition-all transform hover:scale-110 hover:bg-gray-100"
+        >
+          <lucide-icon name="UserPlus" class="w-4 h-4 mr-1"></lucide-icon>
+          <span>Join Us</span>
+        </a>
+      </ng-container>
+
+      <!-- Profile Menu for logged in users -->
+      <div *ngIf="isLoggedIn" class="relative">
+        <button
+          id="profile-button"
+          (click)="toggleProfileMenu($event)"
+          class="flex items-center space-x-2 focus:outline-none group"
+        >
+          <div class="relative">
+            <ng-container *ngIf="user.imageUrl; else fallbackAvatar">
+              <img
+                [src]="user.imageUrl"
+                alt="Profile"
+                class="w-10 h-10 rounded-full object-cover border-2 border-kid-purple transition-transform duration-200 group-hover:scale-110"
+              />
+            </ng-container>
+            <ng-template #fallbackAvatar>
+              <div
+                class="w-10 h-10 rounded-full bg-gray-300 text-gray-700 flex items-center justify-center text-sm font-semibold border-2 border-kid-purple transition-transform duration-200 group-hover:scale-110"
+              >
+                {{ user.firstName!.charAt(0).toUpperCase() }}
+              </div>
+            </ng-template>
+          </div>
+        </button>
+
+        <!-- Profile Dropdown Menu -->
+        <div
+          id="profile-menu"
+          *ngIf="isProfileMenuOpen"
+          class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50 transform origin-top-right transition-all duration-200"
+        >
+          <div class="px-4 py-2 border-b border-gray-100">
+            <p class="text-sm font-medium text-gray-900" *ngIf="user.firstName">
+              {{ user.firstName }}
+            </p>
+          </div>
+          <a
+            [routerLink]="['/dashboard/profile']"
+            class="flex items-center px-4 py-2 text-sm text-kid-blue hover:text-kid-purple transition-all transform hover:scale-110"
+          >
+            <lucide-icon name="User" class="w-4 h-4 mr-2"></lucide-icon>
+            <span>View Profile</span>
+          </a>
+          <button
+            (click)="logout()"
+            class="flex items-center px-4 py-2 text-sm text-kid-blue hover:text-kid-purple transition-all transform hover:scale-110"
+          >
+            <lucide-icon name="LogOut" class="w-4 h-4 mr-1"></lucide-icon>
+            <span>Logout</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu and Search Button -->
+    <div class="md:hidden flex items-center space-x-2">
+      <button
+        (click)="toggleSearch()"
+        class="p-2 text-kid-purple hover:bg-white/20 rounded-lg transition-all transform hover:scale-110"
+      >
+        <lucide-icon name="Search" class="w-6 h-6"></lucide-icon>
+      </button>
+      <button
+        (click)="toggleSidebar()"
+        class="p-2 hover:bg-white/20 rounded-lg transition-all transform hover:scale-110"
+      >
+        <lucide-icon name="Menu" class="w-6 h-6 text-kid-purple"></lucide-icon>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div
+  (click)="isSidebarOpen = false"
+  class="fixed inset-0 bg-black/50 z-50 transition-opacity duration-300 md:hidden"
+  [ngClass]="{
+    'opacity-100': isSidebarOpen,
+    'opacity-0 pointer-events-none': !isSidebarOpen
+  }"
+></div>
+
+<div
+  class="fixed top-0 right-0 w-72 h-full bg-white z-50 transform transition-transform duration-300 md:hidden rounded-l-2xl"
+  [ngClass]="{
+    'translate-x-0': isSidebarOpen,
+    'translate-x-full': !isSidebarOpen
+  }"
+>
+  <div
+    class="h-full flex flex-col bg-gradient-to-b from-white to-kid-blue/5 rounded-l-2xl"
+  >
+    <button
+      (click)="toggleSidebar()"
+      class="absolute top-4 left-4 p-3 hover:bg-white/50 rounded-full transition-all transform hover:scale-110"
+    >
+      <lucide-icon
+        name="ArrowRight"
+        class="w-6 h-6 text-kid-purple"
+      ></lucide-icon>
+    </button>
+
+    <div *ngIf="isLoggedIn" class="pt-16 pb-8 flex flex-col items-center">
+      <div class="relative">
+        <ng-container *ngIf="user.imageUrl; else fallbackAvatar">
+          <img
+            [src]="user.imageUrl"
+            alt="Profile"
+            class="w-20 h-20 rounded-full object-cover border-4 border-kid-purple"
+          />
+        </ng-container>
+        <ng-template #fallbackAvatar>
+          <div
+            class="w-20 h-20 rounded-full bg-gray-300 text-gray-700 flex items-center justify-center text-2xl font-semibold border-4 border-kid-purple"
+          >
+            {{ user.firstName!.charAt(0).toUpperCase() }}
+          </div>
+        </ng-template>
+      </div>
+
+      <span
+        class="mt-4 text-kid-purple font-semibold text-lg"
+        *ngIf="user.firstName !== null"
+      >
+        {{ user.firstName }}
+      </span>
+    </div>
+
+    <div class="flex-1 flex flex-col items-center justify-center space-y-6">
+      <a
+        (click)="toggleSidebar()"
+        [routerLink]="['/home']"
+        class="flex cursor-pointer items-center space-x-2 text-kid-blue hover:text-kid-purple transition-colors text-lg transform hover:scale-110"
+      >
+        <lucide-icon name="Home" class="w-5 h-5"></lucide-icon>
+        <span>Home</span>
+      </a>
+      <a
+        (click)="toggleSidebar()"
+        *ngIf="!isLoggedIn"
+        [routerLink]="['/about-us']"
+        class="flex cursor-pointer items-center space-x-2 text-kid-blue hover:text-kid-purple transition-colors text-lg transform hover:scale-110"
+      >
+        <lucide-icon name="Info" class="w-5 h-5"></lucide-icon>
+        <span>About Us</span>
+      </a>
+      <a
+        (click)="toggleSidebar()"
+        [routerLink]="['/home/activities']"
+        class="flex cursor-pointer items-center space-x-2 text-kid-blue hover:text-kid-purple transition-colors text-lg transform hover:scale-110"
+      >
+        <lucide-icon name="List" class="w-5 h-5"></lucide-icon>
+        <span>All Activities</span>
+      </a>
+      <a
+        (click)="toggleSidebar()"
+        *ngIf="isLoggedIn"
+        [routerLink]="['/home/subscribed-activities']"
+        class="flex cursor-pointer items-center space-x-2 text-kid-blue hover:text-kid-purple transition-colors text-lg transform hover:scale-110"
+      >
+        <lucide-icon name="BookmarkCheck" class="w-5 h-5"></lucide-icon>
+        <span>Subscribed</span>
+      </a>
+      <a
+        (click)="toggleSidebar()"
+        *ngIf="isLoggedIn"
+        [routerLink]="['/dashboard', 'notifications']"
+        class="flex cursor-pointer items-center space-x-2 text-kid-blue hover:text-kid-purple transition-colors text-lg"
+      >
+        <div class="relative">
+          <lucide-icon name="Bell" class="w-5 h-5"></lucide-icon>
+          <span
+            class="absolute -top-1 -right-2 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold text-white bg-red-500 rounded-full"
+          >
+            1
+          </span>
+        </div>
+        <span>Notifications</span>
+        <ng-container *ngIf="notificationCount$ | async as count">
+          <span
+            *ngIf="count > 0"
+            class="absolute top-0 right-0 translate-x-1 -translate-y-1 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center"
+          >
+            {{ count }}
+          </span>
+        </ng-container>
+      </a>
+    </div>
+
+    <div class="p-6 border-t border-kid-blue/10" *ngIf="isInit">
+      <div *ngIf="!isLoggedIn">
+        <div class="flex justify-between">
+          <a
+            (click)="toggleSidebar()"
+            [routerLink]="['/auth/signin']"
+            class="flex items-center cursor-pointer px-4 py-2 text-kid-blue hover:text-kid-purple transition-all transform hover:scale-110"
+          >
+            <lucide-icon name="LogIn" class="w-4 h-4 mr-1"></lucide-icon>
+            <span>Sign In</span>
+          </a>
+          <a
+            (click)="toggleSidebar()"
+            [routerLink]="['/auth/signup']"
+            class="flex items-center cursor-pointer px-4 py-2 text-kid-blue hover:text-kid-purple transition-all transform hover:scale-110"
+          >
+            <lucide-icon name="UserPlus" class="w-4 h-4 mr-1"></lucide-icon>
+            <span>Join Us</span>
+          </a>
+        </div>
+      </div>
+      <div class="flex justify-center items-center">
+        <button
+          *ngIf="isLoggedIn"
+          (click)="logout()"
+          class="flex cursor-pointer items-center px-4 py-2 text-kid-blue hover:text-kid-purple transition-all transform hover:scale-110"
+        >
+          <lucide-icon name="LogOut" class="w-4 h-4 mr-1"></lucide-icon>
+          <span>Logout</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

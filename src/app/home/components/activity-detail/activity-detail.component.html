@@ -1,0 +1,544 @@
+<div class="max-w-7xl mx-auto px-4 py-16">
+  <div
+    *ngIf="!isLoading"
+    class="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100 mt-10"
+  >
+    <!-- Mobile View -->
+    <div class="block md:hidden">
+      <div class="relative w-full h-72 overflow-hidden">
+        <img
+          [src]="activity.imageUrl"
+          [alt]="activity.title"
+          class="w-full h-full object-cover"
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+        ></div>
+        <h2
+          class="absolute font-winky bottom-4 left-4 right-4 text-xl font-bold text-white drop-shadow-md"
+        >
+          {{ activity.title }}
+        </h2>
+        <div
+          class="absolute bottom-4 right-4 text-lg font-bold text-white drop-shadow-md"
+        >
+          <div class="flex items-center gap-4">
+            <div
+              class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-500 text-lg"
+            >
+              <lucide-icon name="Activity"></lucide-icon>
+            </div>
+            <div>
+              <p
+                class="text-xs text-gray-300 uppercase font-semibold tracking-wider"
+              >
+                ACTIVITY TYPE
+              </p>
+              <p class="text-gray-100 font-medium">{{ activity.type }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 bg-gray-50 border-b border-gray-100">
+        <div class="flex items-center gap-3">
+          <ng-container *ngIf="activity.createdBy.imageUrl; else noAvatar">
+            <img
+              [src]="activity.createdBy.imageUrl"
+              [alt]="
+                activity.createdBy.firstName + ' ' + activity.createdBy.lastName
+              "
+              class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm"
+            />
+          </ng-container>
+          <ng-template #noAvatar>
+            <div
+              class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-lg font-medium text-gray-700 border-2 border-white shadow-sm"
+            >
+              {{ activity.createdBy.firstName.charAt(0).toUpperCase() }}
+            </div>
+          </ng-template>
+          <div>
+            <p class="text-xs text-gray-500 uppercase font-semibold">
+              Created by
+            </p>
+            <p class="text-gray-800 font-winky font-medium">
+              {{ activity.createdBy.firstName }}
+              {{ activity.createdBy.lastName }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-5 space-y-5">
+        <div
+          class="relative pl-4 border-l-4 border-blue-500 italic text-gray-600"
+        >
+          <p class="text-lg">{{ activity.shortDescription }}</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 py-4 border-y border-gray-100">
+          <div class="flex items-center gap-3">
+            <div
+              class="flex items-center justify-center w-10 h-10 rounded-full bg-green-100 text-green-500"
+            >
+              <lucide-icon name="MapPin"></lucide-icon>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 uppercase font-semibold">
+                Location
+              </p>
+              <p class="text-gray-800">{{ activity.location }}</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div
+              class="flex items-center justify-center w-10 h-10 rounded-full bg-green-100 text-green-500"
+            >
+              <lucide-icon name="Users"></lucide-icon>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 uppercase font-semibold">
+                Age Range
+              </p>
+              <p class="text-gray-800">
+                {{ activity.minAge }} - {{ activity.maxAge }} years
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div
+              class="flex items-center justify-center w-10 h-10 rounded-full bg-green-100 text-green-500"
+            >
+              <lucide-icon name="Clock"></lucide-icon>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 uppercase font-semibold">
+                Duration
+              </p>
+              <p class="text-gray-800">{{ activity.duration }} min</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div
+              class="flex items-center justify-center w-10 h-10 rounded-full bg-green-100 text-green-500"
+            >
+              <lucide-icon name="Calendar"></lucide-icon>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 uppercase font-semibold">
+                Availability
+              </p>
+              <p class="text-gray-800">{{ activity.availability }}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div
+              class="flex items-center justify-center w-10 h-10 rounded-full bg-green-100 text-green-500 text-lg"
+            >
+              <lucide-icon name="Clock"></lucide-icon>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 uppercase font-semibold">
+                Created at
+              </p>
+              <p class="text-gray-800">{{ activity.timeAgo }}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div
+              class="flex items-center justify-center w-10 h-10 rounded-full bg-green-100 text-green-100 text-lg"
+            >
+              <lucide-icon name="Users"></lucide-icon>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 uppercase font-semibold">
+                Joined users
+              </p>
+              <p class="text-gray-800">{{ activity.joinedCount }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <h3 class="text-xl font-semibold text-gray-800">
+            About This Activity
+          </h3>
+          <p class="text-gray-700 leading-relaxed">
+            {{ activity.detailedDescription }}
+          </p>
+        </div>
+
+        <!-- Mobile Buttons -->
+        <div class="p-4 space-y-3">
+          <button
+            *ngIf="activityStatus === null"
+            (click)="joinActivity(activity.id)"
+            [disabled]="buttonLoading"
+            class="w-full rounded-lg border bg-green-500 px-4 py-2.5 font-medium text-white hover:bg-green-600 transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+          >
+            <div class="flex items-center justify-center gap-2">
+              <svg
+                *ngIf="buttonLoading"
+                class="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              {{ buttonLoading ? "Processing..." : "Join Activity" }}
+            </div>
+          </button>
+
+          <button
+            *ngIf="activityStatus === 'pending'"
+            (click)="cancelRequest(activity.id)"
+            [disabled]="buttonLoading"
+            class="w-full rounded-lg border bg-red-500 px-4 py-2.5 font-medium text-white hover:bg-red-600 transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+          >
+            <div class="flex items-center justify-center gap-2">
+              <svg
+                *ngIf="buttonLoading"
+                class="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              {{ buttonLoading ? "Canceling..." : "Cancel Request" }}
+            </div>
+          </button>
+
+          <button
+            *ngIf="activityStatus === 'pending'"
+            disabled
+            class="w-full rounded-lg border bg-blue-500 px-4 py-2.5 font-medium text-white"
+          >
+            Waiting to confirm
+          </button>
+
+          <button
+            *ngIf="activityStatus === 'confirmed'"
+            disabled
+            class="w-full rounded-lg border bg-green-500 px-4 py-2.5 font-medium text-white"
+          >
+            Joined
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop View -->
+    <div class="hidden md:grid md:grid-cols-5">
+      <div class="col-span-2 overflow-hidden">
+        <img
+          [src]="activity.imageUrl"
+          [alt]="activity.title"
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <!-- Desktop Buttons -->
+      <div class="col-span-3 p-8 space-y-6">
+        <div>
+          <div class="flex justify-between items-start">
+            <div>
+              <h2 class="text-3xl font-winky font-bold text-gray-800 mb-3">
+                {{ activity.title }}
+              </h2>
+              <!-- Creator info for desktop -->
+              <div class="flex items-center gap-3 mb-4">
+                <!-- if there is an imageUrl, show it -->
+                <ng-container *ngIf="activity.createdBy.imageUrl; else noImage">
+                  <img
+                    [src]="activity.createdBy.imageUrl"
+                    [alt]="
+                      activity.createdBy.firstName +
+                      ' ' +
+                      activity.createdBy.lastName
+                    "
+                    class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm"
+                  />
+                </ng-container>
+
+                <!-- otherwise show first character in a circle -->
+                <ng-template #noImage>
+                  <div
+                    class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-lg font-medium text-gray-700 border-2 border-white shadow-sm"
+                  >
+                    {{ activity.createdBy.firstName.charAt(0).toUpperCase() }}
+                  </div>
+                </ng-template>
+
+                <div>
+                  <p class="text-xs text-gray-500 uppercase font-semibold">
+                    Created by
+                  </p>
+                  <p class="text-gray-800 font-winky font-medium">
+                    {{ activity.createdBy.firstName }}
+                    {{ activity.createdBy.lastName }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-center gap-4">
+                <div
+                  class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 text-blue-500 text-lg"
+                >
+                  <lucide-icon name="Activity"></lucide-icon>
+                </div>
+                <div>
+                  <p
+                    class="text-xs text-gray-500 uppercase font-semibold tracking-wider"
+                  >
+                    ACTIVITY TYPE
+                  </p>
+                  <p class="text-gray-800 font-medium">{{ activity.type }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="relative pl-5 border-l-4 border-blue-500 italic text-gray-600"
+          >
+            <p class="text-lg">{{ activity.shortDescription }}</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6 py-5 border-y border-gray-100">
+          <div class="flex items-center gap-4">
+            <div
+              class="flex items-center justify-center w-12 h-12 rounded-full bg-green-100 text-green-500 text-lg"
+            >
+              <lucide-icon name="MapPin"></lucide-icon>
+            </div>
+            <div>
+              <p
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wider"
+              >
+                Location
+              </p>
+              <p class="text-gray-800 font-medium">{{ activity.location }}</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div
+              class="flex items-center justify-center w-12 h-12 rounded-full bg-green-100 text-green-500 text-lg"
+            >
+              <lucide-icon name="Users"></lucide-icon>
+            </div>
+            <div>
+              <p
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wider"
+              >
+                Age Range
+              </p>
+              <p class="text-gray-800 font-medium">
+                {{ activity.minAge }} - {{ activity.maxAge }} years
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div
+              class="flex items-center justify-center w-12 h-12 rounded-full bg-green-100 text-green-500 text-lg"
+            >
+              <lucide-icon name="Clock"></lucide-icon>
+            </div>
+            <div>
+              <p
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wider"
+              >
+                Duration
+              </p>
+              <p class="text-gray-800 font-medium">
+                {{ activity.duration }} min
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div
+              class="flex items-center justify-center w-12 h-12 rounded-full bg-green-100 text-green-500 text-lg"
+            >
+              <lucide-icon name="Calendar"></lucide-icon>
+            </div>
+            <div>
+              <p
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wider"
+              >
+                Availability
+              </p>
+              <p class="text-gray-800 font-medium">
+                {{ activity.availability }}
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div
+              class="flex items-center justify-center w-12 h-12 rounded-full bg-green-100 text-green-500 text-lg"
+            >
+              <lucide-icon name="Clock"></lucide-icon>
+            </div>
+            <div>
+              <p
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wider"
+              >
+                Created at
+              </p>
+              <p class="text-gray-800 font-medium">{{ activity.timeAgo }}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div
+              class="flex items-center justify-center w-12 h-12 rounded-full bg-green-100 text-green-500 text-lg"
+            >
+              <lucide-icon name="Users"></lucide-icon>
+            </div>
+            <div>
+              <p
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wider"
+              >
+                Joined users
+              </p>
+              <p class="text-gray-800 font-medium">
+                {{ activity.joinedCount }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <h3 class="text-xl font-semibold text-gray-800">
+            About This Activity
+          </h3>
+          <p class="text-gray-700 leading-relaxed">
+            {{ activity.detailedDescription }}
+          </p>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <div class="flex gap-3">
+            <button
+              *ngIf="activityStatus === null"
+              (click)="joinActivity(activity.id)"
+              [disabled]="buttonLoading"
+              class="rounded-lg border bg-green-500 px-4 py-2.5 font-medium text-white hover:bg-green-600 transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+            >
+              <div class="flex items-center justify-center gap-2">
+                <svg
+                  *ngIf="buttonLoading"
+                  class="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                {{ buttonLoading ? "Processing..." : "Join Activity" }}
+              </div>
+            </button>
+
+            <button
+              *ngIf="activityStatus === 'pending'"
+              (click)="cancelRequest(activity.id)"
+              [disabled]="buttonLoading"
+              class="rounded-lg border bg-red-500 px-4 py-2.5 font-medium text-white hover:bg-red-600 transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+            >
+              <div class="flex items-center justify-center gap-2">
+                <svg
+                  *ngIf="buttonLoading"
+                  class="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                {{ buttonLoading ? "Canceling..." : "Cancel Request" }}
+              </div>
+            </button>
+          </div>
+
+          <div class="flex gap-3">
+            <button
+              *ngIf="activityStatus === 'pending'"
+              disabled
+              class="rounded-lg border bg-blue-500 px-4 py-2.5 font-medium text-white"
+            >
+              Waiting to confirm
+            </button>
+
+            <button
+              *ngIf="activityStatus === 'confirmed'"
+              disabled
+              class="rounded-lg border bg-green-500 px-4 py-2.5 font-medium text-white"
+            >
+              Joined
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isLoading">
+    <app-loader></app-loader>
+  </div>
+</div>
+
+mobile desktop first desktop second

@@ -1,0 +1,149 @@
+<div
+  class="bg-gray-50 p-2 sm:p-4 min-h-screen mt-24"
+  *ngIf="notifications.length > 0"
+>
+  <div class="max-w-xl mx-auto h-full">
+    <div>
+      <div
+        class="space-y-3 sm:space-y-4 mb-4"
+        *ngFor="let notification of notifications"
+      >
+        <div
+          class="bg-white rounded-lg shadow-sm p-3 sm:p-4 transition-shadow duration-300 hover:shadow-md"
+        >
+          <div class="flex gap-3 sm:gap-4">
+            <!-- Left Section -->
+            <div class="flex-shrink-0">
+              <!-- Avatar or Initial -->
+              <ng-container
+                *ngIf="notification.sender?.imageUrl; else fallback"
+              >
+                <img
+                  [src]="notification.sender.imageUrl"
+                  [alt]="notification.sender.name"
+                  class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-white shadow-sm object-cover"
+                />
+              </ng-container>
+              <ng-template #fallback>
+                <div
+                  class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-300 text-gray-700 flex items-center justify-center text-xs sm:text-sm font-semibold border border-white shadow-sm"
+                >
+                  {{ notification.sender.name.charAt(0).toUpperCase() }}
+                </div>
+              </ng-template>
+              <p class="mt-1 text-[10px] sm:text-xs text-gray-500">
+                {{ notification.created_at }}
+              </p>
+            </div>
+
+            <!-- Body -->
+            <div class="flex-1 min-w-0">
+              <h3 class="text-sm sm:text-base font-semibold text-gray-800">
+                {{ notification.sender.name }}
+              </h3>
+              <p
+                *ngIf="notification.bookingStatus === 'rejected'"
+                class="mt-0.5 text-xs sm:text-sm text-red-500"
+              >
+                You have been rejected for this activity
+              </p>
+              <p
+                *ngIf="notification.bookingStatus === 'confirmed'"
+                class="mt-0.5 text-xs sm:text-sm text-green-500"
+              >
+                You have been confirmed for this activity
+              </p>
+
+              <!-- Actions & Activity -->
+              <div class="mt-2 sm:mt-3 space-y-2">
+                <!-- Activity Preview -->
+                <div
+                  class="bg-gray-50 rounded-md p-2 cursor-pointer"
+                  (click)="navigateToDetail(notification.activity.id)"
+                >
+                  <div class="relative group">
+                    <img
+                      [src]="notification.activity.imageUrl"
+                      class="w-full h-24 sm:h-28 rounded-md object-cover transition-transform duration-200 group-hover:scale-105"
+                    />
+                    <span
+                      class="absolute top-1 right-1 bg-green-400 px-1.5 py-0.5 text-[10px] sm:text-xs rounded-full font-medium text-white backdrop-blur-sm"
+                    >
+                      {{ notification.activity.type }}
+                    </span>
+                  </div>
+                  <h4
+                    class="mt-1 text-xs sm:text-sm font-semibold text-gray-800"
+                  >
+                    {{ notification.activity.title }}
+                  </h4>
+                  <div
+                    class="mt-1 flex items-center text-xs sm:text-sm text-gray-600"
+                  >
+                    <svg
+                      class="w-4 h-4 mr-1 flex-shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0
+                           l-4.243-4.243a8 8 0 1111.314 0z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                    <span class="truncate">{{
+                      notification.activity.location
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="notifications.length === 0"
+  class="bg-gray-50 p-2 sm:p-4 min-h-screen flex justify-center items-center w-full"
+>
+  <div>
+    <div
+      class="bg-white w-full rounded-lg border-2 border-dashed border-gray-200 p-6 flex flex-col items-center"
+    >
+      <svg
+        width="48"
+        height="48"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#666"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 22c1.1 0 2-.9 2-2H10c0 1.1.9 2 2 2z" />
+        <path
+          d="M17 16V11c0-3.31-2.69-6-6-6S5 7.69 5 11v5l-1 1v1h14v-1l-1-1z"
+        />
+        <line x1="4" y1="4" x2="20" y2="20" />
+      </svg>
+      <h3 class="mt-3 text-base font-semibold text-gray-900">
+        No notifications yet
+      </h3>
+      <p class="mt-1 text-xs text-gray-500 text-center">
+        You’ll find responses to your activity requests, whether accepted or
+        declined, right here.
+      </p>
+    </div>
+  </div>
+</div>

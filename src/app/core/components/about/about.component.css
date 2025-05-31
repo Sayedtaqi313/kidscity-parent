@@ -1,0 +1,50 @@
+.container {
+  max-width: 1200px;
+}
+
+@media (max-width: 768px) {
+  .grid > div {
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+    line-height: 2.25rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+
+  section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .md\:grid-cols-3 > div,
+  .lg\:grid-cols-3 > div {
+    grid-column: span 3 / span 3;
+  }
+}
+
+.hover\:shadow-md {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.hover\:shadow-md:hover {
+  transform: translateY(-5px);
+}
+
+p {
+  line-height: 1.625;
+}
+
+.text-lg {
+  line-height: 1.75;
+}

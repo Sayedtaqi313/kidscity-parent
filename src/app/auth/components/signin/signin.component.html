@@ -1,0 +1,234 @@
+<div
+  class="min-h-screen flex flex-col bg-gradient-to-b from-kid-blue/5 to-kid-purple/5"
+>
+  <!-- Header -->
+
+  <!-- Sign In Section -->
+  <div class="flex flex-1 items-center justify-center px-4">
+    <div class="relative w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
+      <!-- Back Link -->
+      <a
+        [routerLink]="['/']"
+        class="absolute top-4 left-4 flex items-center space-x-2 text-gray-700 hover:text-gray-900 transition-all"
+      >
+        <lucide-icon name="arrow-left" class="w-5 h-5"></lucide-icon>
+        <span class="text-sm font-medium">Back</span>
+      </a>
+
+      <h1 class="mb-6 text-center text-3xl font-bold text-kid-purple">
+        Sign In
+      </h1>
+      <form [formGroup]="signinForm" (ngSubmit)="onSubmit()">
+        <!-- Email Field -->
+        <div class="mb-5">
+          <label
+            for="email-address"
+            class="mb-2 block text-sm font-medium text-gray-700"
+          >
+            Your Email
+          </label>
+          <div class="relative">
+            <div
+              class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+            >
+              <lucide-icon
+                name="mail"
+                class="w-4 h-4 text-gray-800"
+              ></lucide-icon>
+            </div>
+            <input
+              formControlName="email"
+              type="email"
+              id="email-address"
+              placeholder="name@email.com"
+              class="block w-full rounded-lg border focus:border-green-500 p-2 pl-10 text-sm focus:outline-none"
+            />
+          </div>
+          <div>
+            <small
+              class="text-red-700 ml-1"
+              *ngIf="
+                signinForm.get('email')?.hasError('required') &&
+                signinForm.get('email')?.touched
+              "
+            >
+              Email is required
+            </small>
+            <small
+              class="text-red-700 ml-1"
+              *ngIf="signinForm.get('email')?.hasError('email')"
+            >
+              Email is invalid
+            </small>
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="mb-5">
+          <label
+            for="password"
+            class="mb-2 block text-sm font-medium text-gray-700"
+          >
+            Your Password
+          </label>
+          <div class="relative">
+            <div
+              class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+            >
+              <lucide-icon
+                name="lock"
+                class="w-4 h-4 text-gray-800"
+              ></lucide-icon>
+            </div>
+            <input
+              formControlName="password"
+              [type]="passwordVisible ? 'text' : 'password'"
+              id="password"
+              placeholder="Enter your password"
+              class="block w-full rounded-lg border focus:border-green-500 p-2 pl-10 text-sm focus:outline-none"
+            />
+            <button
+              type="button"
+              (click)="passwordVisible = !passwordVisible"
+              class="absolute inset-y-0 right-0 flex items-center pr-3"
+            >
+              <lucide-icon
+                *ngIf="!passwordVisible"
+                name="eye"
+                class="w-5 h-5 text-gray-800"
+              ></lucide-icon>
+              <lucide-icon
+                *ngIf="passwordVisible"
+                name="eye-off"
+                class="w-5 h-5 text-gray-800"
+              ></lucide-icon>
+            </button>
+          </div>
+          <small
+            class="text-red-700 ml-1"
+            *ngIf="
+              signinForm.get('password')?.invalid &&
+              signinForm.get('password')?.touched
+            "
+          >
+            Password is required
+          </small>
+        </div>
+
+        <!-- Remember Me Checkbox -->
+        <div class="mb-5 flex items-center justify-between">
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input
+              type="checkbox"
+              class="peer sr-only"
+              formControlName="rememberMe"
+            />
+            <div
+              class="w-4 h-4 border border-black bg-white flex items-center justify-center peer-checked:after:content-['✓'] peer-checked:after:text-black peer-checked:after:text-xs"
+            ></div>
+            <span class="text-gray-700">Remember me</span>
+          </label>
+          <a
+            [routerLink]="['/auth/forgot-password']"
+            class="text-sm text-kid-purple hover:underline"
+          >
+            Forgot Password?
+          </a>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          [disabled]="isLoading"
+          class="w-full rounded-lg cursor-pointer border bg-green-600 hover:bg-green-700 px-3.5 py-1.5 text-center font-medium text-white transition-all focus:ring-1 focus:outline-none relative"
+        >
+          <div class="flex items-center justify-center gap-2">
+            <svg
+              *ngIf="isLoading"
+              class="animate-spin h-5 w-5 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            {{ isLoading ? "Signing In..." : "Sign In" }}
+          </div>
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="relative my-6 flex items-center">
+        <div class="flex-grow border-t border-gray-300"></div>
+        <span class="px-2 text-gray-500">or</span>
+        <div class="flex-grow border-t border-gray-300"></div>
+      </div>
+
+      <!-- Google Sign In Button -->
+      <button
+        (click)="signInWithGoogle()"
+        type="button"
+        [disabled]="isGoogleLoading"
+        class="w-full flex items-center justify-center gap-2 rounded-lg border px-3.5 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100 relative"
+      >
+        <svg
+          *ngIf="isGoogleLoading"
+          class="h-5 w-5 animate-spin text-gray-800 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
+        </svg>
+        <span
+          [class.opacity-0]="isGoogleLoading"
+          class="flex items-center gap-2"
+        >
+          <img
+            src="https://developers.google.com/identity/images/g-logo.png"
+            alt="Google Logo"
+            class="w-5 h-5"
+          />
+          Continue with Google
+        </span>
+      </button>
+
+      <!-- Signup Link -->
+      <p class="mt-6 text-center text-sm text-gray-700">
+        Don't have an account?
+        <a
+          [routerLink]="['/auth/signup']"
+          class="text-kid-purple hover:underline"
+        >
+          Sign Up
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+</div>

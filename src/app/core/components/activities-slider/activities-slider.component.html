@@ -1,0 +1,204 @@
+<div *ngIf="activities.length > 0" class="mb-12">
+  <h3 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
+    <span *ngIf="showAlternative" class="text-sm text-gray-500 ml-2">
+      (Showing alternatives based on your search)
+    </span>
+  </h3>
+
+  <div class="relative">
+    <button
+      (click)="scrollLeft()"
+      class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-gray-200 hover:bg-gray-300 rounded-full p-2 shadow-md"
+    >
+      <svg
+        class="w-6 h-6 text-gray-700"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 19l-7-7 7-7"
+        />
+      </svg>
+    </button>
+
+    <div
+      #slider
+      class="flex space-x-4 overflow-x-auto scroll-smooth no-scrollbar p-4"
+      (scroll)="updateActiveIndex()"
+    >
+      <div
+        *ngFor="let activity of activities; let i = index"
+        class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 min-w-[300px] flex-shrink-0"
+      >
+        <div class="relative">
+          <img
+            [src]="activity.imageUrl"
+            alt="Activity image"
+            class="w-full h-48 object-cover"
+          />
+          <div class="absolute top-4 right-4">
+            <span
+              class="bg-green-500 text-white px-4 py-1.5 rounded-full text-sm font-medium shadow-lg"
+            >
+              {{ activity.type }} Activity
+            </span>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <h3 class="text-xl font-bold text-gray-900 mb-3">
+            {{ activity.title }}
+          </h3>
+
+          <div class="flex items-center text-gray-600 mb-4">
+            <svg
+              class="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+            <span class="text-sm">{{ activity.location }}</span>
+          </div>
+
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="flex items-center bg-blue-50 rounded-full px-3 py-1.5">
+              <svg
+                class="w-4 h-4 text-green-500 mr-1.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                />
+              </svg>
+              <span class="text-sm text-green-700"
+                >Min {{ activity.minAge }}yrs</span
+              >
+            </div>
+            <div class="flex items-center bg-green-50 rounded-full px-3 py-1.5">
+              <svg
+                class="w-4 h-4 text-blue-500 mr-1.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
+              </svg>
+              <span class="text-sm text-blue-700"
+                >Max {{ activity.maxAge }}yrs</span
+              >
+            </div>
+          </div>
+
+          <p class="text-gray-600 text-sm leading-relaxed mb-6">
+            {{ activity.shortDescription }}
+          </p>
+
+          <div class="flex items-center space-x-3">
+            <button
+              (click)="handleActivityAction(activity)"
+              class="flex-1 font-medium py-2 px-4 rounded-lg transition-colors duration-200 text-white"
+              [ngClass]="{
+                'bg-red-500 hover:bg-red-600': activity.isJoined,
+                'bg-green-500 hover:bg-green-600': !activity.isJoined
+              }"
+            >
+              {{ activity.isJoined ? "Cancel" : "Join" }}
+            </button>
+            <button
+              (click)="navigateToDetail(activity.id)"
+              class="flex-1 bg-blue-500 hover:bg-blue-600 font-medium py-2 px-4 rounded-lg transition-colors text-white duration-200"
+            >
+              Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button
+      (click)="scrollRight()"
+      class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 rounded-full p-2 shadow-md"
+    >
+      <svg
+        class="w-6 h-6 text-gray-700"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 5l7 7-7 7"
+        />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Slider Dots -->
+  <div class="flex justify-center mt-4 space-x-2">
+    <span
+      *ngFor="let dot of dots; let i = index"
+      class="w-3 h-3 rounded-full transition-all duration-300 cursor-pointer"
+      [ngClass]="{
+        'bg-green-500 scale-125': activeIndex === i,
+        'bg-blue-500': activeIndex !== i
+      }"
+      (click)="scrollToIndex(i)"
+    ></span>
+  </div>
+</div>
+
+<div
+  *ngIf="activities.length === 0 && !isAlternative"
+  class="text-center py-16"
+>
+  <div class="max-w-md mx-auto">
+    <svg
+      class="w-16 h-16 text-gray-300 mx-auto mb-4"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    <h3 class="text-xl font-semibold text-gray-800 mb-2">
+      No Activities Found
+    </h3>
+    <p class="text-gray-600 mb-6">
+      We couldn't find any activities matching your search criteria.
+    </p>
+  </div>
+</div>
