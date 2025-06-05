@@ -48,7 +48,6 @@ export class NotificationsService {
 
     this.socket.on('notification', (payload: any) => {
       const transformed = this.transformPayload(payload);
-      console.log('payload', transformed);
       const current = this.notificationsSubject.value;
       if (!current.find((n) => n.id === transformed.id)) {
         this.notificationsSubject.next([transformed, ...current]);

@@ -26,8 +26,9 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     );
   }
 
-  markAsRead(id: string) {
+  resolveNotification(id: string) {
     this.notificationsService.markAsRead(id).subscribe();
+    this.notificationsService.initialize();
   }
 
   navigateToDetail(id: string) {

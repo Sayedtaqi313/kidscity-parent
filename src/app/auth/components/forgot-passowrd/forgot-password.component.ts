@@ -34,7 +34,6 @@ export class ForgotPasswordComponent implements OnInit {
     this.isLoading = true;
 
     const email = this.forgotPasswordForm.value.email;
-    console.log('email', email);
     this.authService.requestReset(email).subscribe({
       next: (res) => {
         this.isLoading = false;

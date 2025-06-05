@@ -46,7 +46,6 @@ export class ActivityDetailComponent implements OnInit {
       )
       .subscribe({
         next: (res) => {
-          console.log(res);
           this.activityStatus = 'status' in res ? res?.status : null;
           this.activity = res;
           this.isLoading = false;
@@ -73,7 +72,6 @@ export class ActivityDetailComponent implements OnInit {
       )
       .subscribe({
         next: (res) => {
-          console.log('form join', res);
           this.activityStatus = res.status ?? null;
           this.activity = res;
           this.snackbarService.openSnackbar(

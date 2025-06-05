@@ -61,7 +61,7 @@ export class HomeContentComponent implements OnInit {
         title: 'Explore more',
         description:
           'Step outside and enjoy thrilling outdoor adventures waiting for you!',
-        image: 'homecard/outdoor.jpg',
+        image: 'homecard/outdoor.png',
         tag: 'Outdoor',
       },
     ];
@@ -70,7 +70,7 @@ export class HomeContentComponent implements OnInit {
         title: 'Explore more',
         description:
           'Uncover amazing events and activities happening right in your city!',
-        image: 'homecard/inCity.jpg',
+        image: 'homecard/inCity.png',
         tag: 'In your city',
       },
       {

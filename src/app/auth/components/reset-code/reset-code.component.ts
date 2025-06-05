@@ -44,7 +44,6 @@ export class ResetCodeComponent implements OnInit {
     this.isLoading = true;
 
     const code = this.codeForm.value.code;
-    console.log('code', code, 'email', this.email);
     this.authService.verifyResetCode(this.email, code).subscribe({
       next: () => {
         this.isLoading = false;

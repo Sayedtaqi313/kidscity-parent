@@ -97,7 +97,6 @@ export class SearchResultsComponent implements OnInit {
   }
 
   onLocationSelect(suggestion: any) {
-    console.log('sug', suggestion);
     this.searchForm.patchValue({
       location: suggestion.formatted,
     });

@@ -158,7 +158,7 @@
 
 <div
   (click)="isSidebarOpen = false"
-  class="fixed inset-0 bg-black/50 z-50 transition-opacity duration-300 md:hidden"
+  class="fixed inset-0 bg-black/50 sidebar transition-opacity duration-300 md:hidden"
   [ngClass]="{
     'opacity-100': isSidebarOpen,
     'opacity-0 pointer-events-none': !isSidebarOpen
@@ -166,7 +166,7 @@
 ></div>
 
 <div
-  class="fixed top-0 right-0 w-72 h-full bg-white z-50 transform transition-transform duration-300 md:hidden rounded-l-2xl"
+  class="fixed top-0 right-0 w-72 h-full bg-white sidebar transform transition-transform duration-300 md:hidden rounded-l-2xl"
   [ngClass]="{
     'translate-x-0': isSidebarOpen,
     'translate-x-full': !isSidebarOpen
@@ -240,11 +240,11 @@
       <a
         (click)="toggleSidebar()"
         *ngIf="isLoggedIn"
-        [routerLink]="['/home/subscribed-activities']"
+        [routerLink]="['/dashboard/subscribed-activities']"
         class="flex cursor-pointer items-center space-x-2 text-kid-blue hover:text-kid-purple transition-colors text-lg transform hover:scale-110"
       >
         <lucide-icon name="BookmarkCheck" class="w-5 h-5"></lucide-icon>
-        <span>Subscribed</span>
+        <span>Subscribed-Activities</span>
       </a>
       <a
         (click)="toggleSidebar()"
