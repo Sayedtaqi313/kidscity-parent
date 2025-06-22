@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  appName: 'user',
+  appName: 'subscriber',
   appUrl: 'http://localhost:3000',
   fileUrl: 'http://localhost:3000/uploads',
   socketUrl: 'http://localhost:3000',
